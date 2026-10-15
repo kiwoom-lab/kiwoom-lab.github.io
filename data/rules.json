@@ -1,0 +1,53 @@
+{
+  "version": "0.1-prototype",
+  "note": "테스트용 규칙입니다. 가중치와 구간은 기획·컴플라이언스 검토 후 조정하세요.",
+  "groups": [
+    {"id": "liquid", "name": "유동·안정형", "products": ["rp_krw", "rp_fx", "note"], "indicators": ["base_rate", "cd91"]},
+    {"id": "income", "name": "이자형", "products": ["bond_kr", "bond_fx"], "indicators": ["gov3y", "gov10y", "corp_aa"]},
+    {"id": "market", "name": "시장연계형", "products": ["els", "fund", "wrap", "trust", "ai"], "indicators": ["kospi", "usdkrw"]}
+  ],
+  "questions": [
+    {"id": "purpose", "label": "투자 목적", "options": [
+      {"v": "lump", "t": "목돈 마련"}, {"v": "retire", "t": "노후 준비"},
+      {"v": "tax", "t": "절세"}, {"v": "idle", "t": "여유자금 운용"}]},
+    {"id": "horizon", "label": "투자 기간", "options": [
+      {"v": "m6", "t": "6개월 이내"}, {"v": "y1", "t": "1년 이내"},
+      {"v": "y3", "t": "1~3년"}, {"v": "y5", "t": "5년 이상"}]},
+    {"id": "amount", "label": "투자 금액대", "options": [
+      {"v": "s", "t": "1천만 원 미만"}, {"v": "m", "t": "1천만~1억 원"}, {"v": "l", "t": "1억 원 이상"}]},
+    {"id": "loss", "label": "감내할 수 있는 손실", "options": [
+      {"v": "0", "t": "원금 보존이 우선"}, {"v": "5", "t": "최대 -5%"},
+      {"v": "10", "t": "최대 -10%"}, {"v": "20", "t": "-20% 이상도 가능"}]},
+    {"id": "liquidity", "label": "중도에 현금이 필요할 가능성", "options": [
+      {"v": "high", "t": "높음"}, {"v": "low", "t": "낮음"}]},
+    {"id": "fx", "label": "외화 자산 선호", "options": [
+      {"v": "yes", "t": "관심 있음"}, {"v": "no", "t": "원화 중심"}]},
+    {"id": "taxroom", "label": "ISA·연금저축 한도 여유", "options": [
+      {"v": "yes", "t": "한도가 남아 있음"}, {"v": "no", "t": "거의 다 채움"}, {"v": "unknown", "t": "잘 모르겠음"}]}
+  ],
+  "risk": {
+    "loss": {"0": 0, "5": 25, "10": 50, "20": 80},
+    "horizon": {"m6": -20, "y1": -8, "y3": 5, "y5": 12},
+    "purpose": {"lump": 0, "retire": 5, "tax": 0, "idle": 3},
+    "liquidityHigh": -10,
+    "bands": [
+      {"max": 20, "id": 1, "name": "안정형"},
+      {"max": 40, "id": 2, "name": "안정추구형"},
+      {"max": 60, "id": 3, "name": "중립형"},
+      {"max": 80, "id": 4, "name": "적극형"},
+      {"max": 100, "id": 5, "name": "공격형"}
+    ]
+  },
+  "baseWeights": {
+    "1": {"liquid": 70, "income": 30, "market": 0},
+    "2": {"liquid": 45, "income": 40, "market": 15},
+    "3": {"liquid": 25, "income": 40, "market": 35},
+    "4": {"liquid": 15, "income": 30, "market": 55},
+    "5": {"liquid": 10, "income": 20, "market": 70}
+  },
+  "constraints": {
+    "shortHorizonMarketCap": 10,
+    "highLiquidityLiquidFloor": 30
+  },
+  "fit": {"high": 35, "mid": 15}
+}
